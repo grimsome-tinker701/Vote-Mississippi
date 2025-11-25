@@ -2,22 +2,24 @@
   declare(strict_types=1);
   session_start();
   if(!empty($_SESSION['QuestionareApproved'])){$Approved = $_SESSION['QuestionareApproved'];} else {$Approved = "No";}
-  if($Approved == "Yes"){True;}else{die("Direct Access Is Not Allowed!!!");}
+  if($Approved == "Yes"){True;}else{header("Location: Error.html");die();}
   use Classes\FillForm;
   require_once __DIR__ . '\\vendor\\autoload.php';
 ?>
-<!doctype php>
-<html>
+<!doctype html>
+<html lang="en">
   <head>
     <title>Voter Questionare</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
   </head>
   <body>
     <center>
     <?PHP
         function Validate($input){if(preg_match("/^[a-zA-Z' '0-9]*$/",$input)){return True;}else{return False;}}
         function ValidateText($input){if(preg_match("/^[a-zA-Z' ']*$/",$input)){return True;}else{return False;}}
-        function ValidateDOB($input){if(preg_match("/^[0-9'-'\/]*$/",$input)){return True;}else{return False;}}
-        function ValidatePhone($input){if(preg_match("/^[0-9'-''('')']*$/",$input)){return True;}else{return False;}}
+        function ValidateDOB($input){if(preg_match("/^[0-9\/]*$/",$input) && preg_match("@[/]*$@", $input)){return True;}else{return False;}}
+        function ValidatePhone($input){if(preg_match("/^[0-9-]{12}$/",$input)){return True;}else{return False;}}
         function ValidateEmail($input){if(preg_match("/^[a-zA-Z0-9'@''.']*$/",$input) && preg_match('/@/',$input) && preg_match('/./', $input)){return True;}else{return False;}}
         function ValidateInt($input){if(preg_match("/^[0-9]*$/", $input)){return True;}else{return False;}}
         function Sanatize($input){return htmlspecialchars(stripslashes(trim($input)));}
@@ -187,11 +189,11 @@
             <Form method="POST" action="$FileName">
             <H1>What is your name?</H1>
             $FNameError
-            <input type="text" name="FName" placeholder="First Name:" autofocus required><br/>
+            <input type="text" name="FName" placeholder="F&#8204;irst N&#8204;ame:"  required autocorrect="off" spellcheck="false" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');" ><br/>
             $MNameError
-            <input type="text" name="MName" placeholder="Middle Name:" required><br/>
+            <input type="text" name="MName" placeholder="M&#8204;iddle N&#8204;ame:" required autocorrect="off" spellcheck="false" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');" ><br/>
             $LNameError
-            <input type="text" name="LName" placeholder="Last Name:" required><br/>
+            <input type="text" name="LName" placeholder="L&#8204;ast N&#8204;&#8204;ame:" required autocorrect="off" spellcheck="false" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');" ><br/>
             &nbsp;&nbsp;&nbsp;<input type="submit" Value="Next">
             </form>
             </div>
@@ -233,6 +235,7 @@
             <Form method="POST" action="$FileName">
             <H1>What is your Date of Birth?</H1>
             $DOBError
+            <span>Format: MM/DD/YYYY</span><br/>
             <input type="text" id="DOB" name="DOB" required><br/>
             
             <input type="hidden" name="FName" value="$FNameValue">
@@ -327,7 +330,7 @@
             <Form method="POST" action="$FileName">
             <H1>What is your Contact Information?</H1>
             $PhoneError
-            <p>format: 601-555-1234</P>
+            <span>Format: 601-555-1234</span><br/>
             <input type="text" name="Phone" placeholder="Phone Number" required><br/>
             $EmailError
             <input type="email" name="Email" placeholder="Email" required><br/>
@@ -455,5 +458,9 @@
         
     ?>
     </center>
+    <script>
+        form.attr('autocomplete', 'off');
+        input.attr('autocomplete', 'off');
+    </script>
   </body>
 </html>

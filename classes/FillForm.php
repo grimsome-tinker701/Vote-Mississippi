@@ -6,6 +6,7 @@
     use mikehaertl\pdftk\Pdf;
 
     if(!defined("ACCESSCHECK")){
+            header("location:./Error.html");
             die("Direct Access is Prohibited!");
         }
 
