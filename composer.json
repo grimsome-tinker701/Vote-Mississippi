@@ -1,0 +1,16 @@
+{
+    "name": "school/vote",
+    "authors": [
+        {
+            "name": "Tanner Guthrie"
+        }
+    ],
+    "autoload" : {
+        "psr-4" : {
+            "Classes\\" : "./classes"
+        }
+    },
+    "require": {
+        "mikehaertl/php-pdftk": "^0.13.1"
+    }
+}
